@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI Circuit Explainer & Verification Studio</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <main class="shell">
+    <header>
+      <p class="eyebrow">ECE analysis workbench</p>
+      <h1>AI Circuit Explainer <span>&amp; Verification Studio</span></h1>
+      <p class="subtitle">Calculate locally, collect AI answers separately, and verify with real simulation data.</p>
+    </header>
+
+    <section class="grid">
+      <article class="panel controls">
+        <label for="circuit">Circuit</label>
+        <select id="circuit">
+          {% for key, circuit in circuits.items() %}
+          <option value="{{ key }}" {% if loop.first %}selected{% endif %}>{{ circuit.name }}</option>
+          {% endfor %}
+        </select>
+        <div id="fields"></div>
+        <button id="calculate" class="primary">Calculate values</button>
+      </article>
+
+      <article class="panel results">
+        <h2>Calculation</h2>
+        <div id="results" class="empty">Select a circuit to begin.</div>
+      </article>
+    </section>
+
+    <section class="panel verification">
+      <h2>Verification record</h2>
+      <div class="form-grid">
+        <label>Quantity<select id="quantity"><option value="">Select from calculation</option></select></label>
+        <label>Calculated value<input id="calculated" type="number" step="any"></label>
+        <label>AI result<input id="ai-result" type="text"></label>
+        <label>Simulation value<input id="simulation" type="number" step="any"></label>
+        <label>Status<select id="status"><option>Pending</option><option>Verified</option><option>Needs review</option></select></label>
+        <label class="wide">Notes<textarea id="notes" rows="3"></textarea></label>
+      </div>
+      <div class="actions">
+        <button id="save" class="secondary">Save verification record</button>
+        <a id="download" class="button" href="/api/verify.csv">Download CSV error log</a>
+      </div>
+      <p id="verification-message" role="status"></p>
+    </section>
+
+    <p class="notice">Important: The calculation engine is theoretical. Entered simulator values are never presented as measurements already obtained by this application.</p>
+  </main>
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
